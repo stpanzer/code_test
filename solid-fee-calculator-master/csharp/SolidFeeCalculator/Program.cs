@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using SolidFeeCalculator.Enums;
 
 namespace SolidFeeCalculator
@@ -12,7 +10,7 @@ namespace SolidFeeCalculator
 
         static void Main(string[] args)
         {
-            var fee = 0m;
+            decimal fee;
 
             try
             {
@@ -25,30 +23,41 @@ namespace SolidFeeCalculator
                 throw;
             }
 
-            System.Console.WriteLine(fee.ToString());
+            Console.WriteLine(fee.ToString());
             Console.ReadKey();
 
         }
 
         /// <summary>
-        ///   This function calculates the fee
+        ///   This function calculates the fee for a particular ad, based on the date the ad ends, the type of ad and the user type.
         /// </summary>
         /// <param name="usertype"> 0= Normal, 1 = Company</param>
-        /// <param name="itemtype"> 0= Auction, 1 = BuyItNow</param>
+        /// <param name="adType"> 0= Auction, 1 = BuyItNow</param>
         /// <param name="itemprice"></param>
         /// <param name="itemenddate">Time Item ends </param>
-        /// <returns></returns>
-        public static decimal CalculateFee(UserTypeEnum usertype, AdTypeEnum itemtype, decimal itemprice, DateTime itemenddate)
+        /// <returns>
+        ///  Returns the fee for the ad
+        /// </returns>
+        public static decimal CalculateFee(UserTypeEnum usertype, AdTypeEnum adType, decimal itemprice, DateTime itemenddate)
         {
+            if (!_adTypePrice.ContainsKey(adType))
+                throw new Exception("Price unknown for this ad type");
             var discount = CalculateDiscount(itemenddate, usertype);
-            return _itemTypePrice[itemtype] + itemprice - discount;
+            return _adTypePrice[adType] + itemprice - discount;
         }
-        private static Dictionary<AdTypeEnum, decimal> _itemTypePrice = new Dictionary<AdTypeEnum, decimal>()
+
+        /// <summary>
+        /// A dictionary containing the price for each ad type
+        /// </summary>
+        private static Dictionary<AdTypeEnum, decimal> _adTypePrice = new Dictionary<AdTypeEnum, decimal>()
         {
             {AdTypeEnum.Auction, 25m},
             {AdTypeEnum.BuyItNow, 35m}
         };
 
+        /// <summary>
+        /// Calculates the discount for a particular ad, based on the date the ad ends and the user type.
+        /// </summary>
         private static decimal CalculateDiscount(DateTime itemEndDate, UserTypeEnum userType)
         {
             var discount = 0;
