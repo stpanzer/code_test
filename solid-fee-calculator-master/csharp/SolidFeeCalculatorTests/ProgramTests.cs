@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using SolidFeeCalculator;
+using SolidFeeCalculator.Enums;
 
 namespace SolidFeeCalculatorTest
 {
@@ -61,22 +62,26 @@ namespace SolidFeeCalculatorTest
         //
         #endregion
 
-
+        static DateTime today = DateTime.Today;
         /// <summary>
         ///A test for CalculateFee
         ///</summary>
-        [Test]
-        public void CalculateFeeTest()
+        [TestCaseSource(nameof(CalculateFeeTestCases))]
+        public void CalculateFeeTest(UserTypeEnum userType, ItemTypeEnum itemType, int itemPrice, DateTime itemEndDate, int expected)
         {
-            int userType = 0; // TODO: Initialize to an appropriate value
-            int itemType = 0; // TODO: Initialize to an appropriate value
-            int itemPrice = 0; // TODO: Initialize to an appropriate value
-            DateTime itemEndDate = new DateTime(); // TODO: Initialize to an appropriate value
-            int expected = 0; // TODO: Initialize to an appropriate value
             int actual;
             actual = Program.CalculateFee(userType, itemType, itemPrice, itemEndDate);
             Assert.That(expected == actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
+
+        static TestCaseData[] CalculateFeeTestCases = [
+            new TestCaseData(UserTypeEnum.Normal, ItemTypeEnum.Auction, 100, today, 115),
+            new TestCaseData(UserTypeEnum.Normal, ItemTypeEnum.Auction, 100, today.AddDays(-1), 125),
+            new TestCaseData(UserTypeEnum.Normal, ItemTypeEnum.BuyItNow, 100, today, 125),
+            new TestCaseData(UserTypeEnum.Normal, ItemTypeEnum.BuyItNow, 100, today.AddDays(-1), 135),
+            new TestCaseData(UserTypeEnum.Company, ItemTypeEnum.Auction, 100, today, 110),
+            new TestCaseData(UserTypeEnum.Company, ItemTypeEnum.Auction, 100, today.AddDays(-1), 120),
+            new TestCaseData(UserTypeEnum.Company, ItemTypeEnum.BuyItNow, 100, today, 120),
+            new TestCaseData(UserTypeEnum.Company, ItemTypeEnum.BuyItNow, 100, today.AddDays(-1), 130)];
     }
 }
