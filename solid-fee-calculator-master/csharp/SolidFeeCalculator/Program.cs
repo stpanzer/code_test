@@ -33,17 +33,17 @@ namespace SolidFeeCalculator
         /// </summary>
         /// <param name="usertype"> 0= Normal, 1 = Company</param>
         /// <param name="adType"> 0= Auction, 1 = BuyItNow</param>
-        /// <param name="itemprice"></param>
-        /// <param name="itemenddate">Time Item ends </param>
+        /// <param name="itemPrice"></param>
+        /// <param name="itemEndDate">Time Item ends </param>
         /// <returns>
         ///  Returns the fee for the ad
         /// </returns>
-        public static decimal CalculateFee(UserTypeEnum usertype, AdTypeEnum adType, decimal itemprice, DateTime itemenddate)
+        public static decimal CalculateFee(UserTypeEnum usertype, AdTypeEnum adType, decimal itemPrice, DateTime itemEndDate)
         {
             if (!_adTypePrice.ContainsKey(adType))
                 throw new Exception("Price unknown for this ad type");
-            var discount = CalculateDiscount(itemenddate, usertype);
-            return _adTypePrice[adType] + itemprice - discount;
+            var discount = CalculateDiscount(itemEndDate, usertype);
+            return _adTypePrice[adType] + itemPrice - discount;
         }
 
         /// <summary>
