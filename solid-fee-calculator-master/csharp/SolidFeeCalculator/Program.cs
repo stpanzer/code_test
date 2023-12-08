@@ -40,16 +40,8 @@ namespace SolidFeeCalculator
         /// <returns></returns>
         public static decimal CalculateFee(UserTypeEnum usertype, AdTypeEnum itemtype, decimal itemprice, DateTime itemenddate)
         {
-            try
-            {
-                var discount = CalculateDiscount(itemenddate, usertype);
-                return _itemTypePrice[itemtype] + itemprice - discount;
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.Message);
-                throw;
-            }
+            var discount = CalculateDiscount(itemenddate, usertype);
+            return _itemTypePrice[itemtype] + itemprice - discount;
         }
         private static Dictionary<AdTypeEnum, decimal> _itemTypePrice = new Dictionary<AdTypeEnum, decimal>()
         {
