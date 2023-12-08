@@ -12,11 +12,11 @@ namespace SolidFeeCalculator
 
         static void Main(string[] args)
         {
-            var fee = 0;
+            var fee = 0m;
 
             try
             {
-                fee = CalculateFee(UserTypeEnum.Company, ItemTypeEnum.BuyItNow, 100, DateTime.Today);
+                fee = CalculateFee(UserTypeEnum.Company, AdTypeEnum.BuyItNow, 100m, DateTime.Today);
 
             }
             catch (Exception exception)
@@ -31,14 +31,14 @@ namespace SolidFeeCalculator
         }
 
         /// <summary>
-        ///   This function handles all calculation you ever need!
+        ///   This function calculates the fee
         /// </summary>
         /// <param name="usertype"> 0= Normal, 1 = Company</param>
         /// <param name="itemtype"> 0= Auction, 1 = BuyItNow</param>
         /// <param name="itemprice"></param>
         /// <param name="itemenddate">Time Item ends </param>
         /// <returns></returns>
-        public static int CalculateFee(UserTypeEnum usertype, ItemTypeEnum itemtype, int itemprice, DateTime itemenddate)
+        public static decimal CalculateFee(UserTypeEnum usertype, AdTypeEnum itemtype, decimal itemprice, DateTime itemenddate)
         {
             try
             {
@@ -51,13 +51,13 @@ namespace SolidFeeCalculator
                 throw;
             }
         }
-        private static Dictionary<ItemTypeEnum, int> _itemTypePrice = new Dictionary<ItemTypeEnum, int>()
+        private static Dictionary<AdTypeEnum, decimal> _itemTypePrice = new Dictionary<AdTypeEnum, decimal>()
         {
-            {ItemTypeEnum.Auction, 25},
-            {ItemTypeEnum.BuyItNow, 35}
+            {AdTypeEnum.Auction, 25m},
+            {AdTypeEnum.BuyItNow, 35m}
         };
 
-        private static int CalculateDiscount(DateTime itemEndDate, UserTypeEnum userType)
+        private static decimal CalculateDiscount(DateTime itemEndDate, UserTypeEnum userType)
         {
             var discount = 0;
             if (itemEndDate == DateTime.Today) discount += 10;

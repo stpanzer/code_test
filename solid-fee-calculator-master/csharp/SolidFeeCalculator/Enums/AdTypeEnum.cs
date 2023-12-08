@@ -1,6 +1,6 @@
 namespace SolidFeeCalculator.Enums
 {
-    public enum ItemTypeEnum
+    public enum AdTypeEnum
     {
         Auction = 0,
         BuyItNow = 1

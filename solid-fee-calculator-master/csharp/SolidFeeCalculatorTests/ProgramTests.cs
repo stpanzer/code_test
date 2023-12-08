@@ -67,21 +67,20 @@ namespace SolidFeeCalculatorTest
         ///A test for CalculateFee
         ///</summary>
         [TestCaseSource(nameof(CalculateFeeTestCases))]
-        public void CalculateFeeTest(UserTypeEnum userType, ItemTypeEnum itemType, int itemPrice, DateTime itemEndDate, int expected)
+        public void CalculateFeeTest(UserTypeEnum userType, AdTypeEnum itemType, decimal itemPrice, DateTime itemEndDate, int expected)
         {
-            int actual;
-            actual = Program.CalculateFee(userType, itemType, itemPrice, itemEndDate);
+            var actual = Program.CalculateFee(userType, itemType, itemPrice, itemEndDate);
             Assert.That(expected == actual);
         }
 
         static TestCaseData[] CalculateFeeTestCases = [
-            new TestCaseData(UserTypeEnum.Normal, ItemTypeEnum.Auction, 100, today, 115),
-            new TestCaseData(UserTypeEnum.Normal, ItemTypeEnum.Auction, 100, today.AddDays(-1), 125),
-            new TestCaseData(UserTypeEnum.Normal, ItemTypeEnum.BuyItNow, 100, today, 125),
-            new TestCaseData(UserTypeEnum.Normal, ItemTypeEnum.BuyItNow, 100, today.AddDays(-1), 135),
-            new TestCaseData(UserTypeEnum.Company, ItemTypeEnum.Auction, 100, today, 110),
-            new TestCaseData(UserTypeEnum.Company, ItemTypeEnum.Auction, 100, today.AddDays(-1), 120),
-            new TestCaseData(UserTypeEnum.Company, ItemTypeEnum.BuyItNow, 100, today, 120),
-            new TestCaseData(UserTypeEnum.Company, ItemTypeEnum.BuyItNow, 100, today.AddDays(-1), 130)];
+            new TestCaseData(UserTypeEnum.Normal, AdTypeEnum.Auction, 100m, today, 115),
+            new TestCaseData(UserTypeEnum.Normal, AdTypeEnum.Auction, 100m, today.AddDays(-1), 125),
+            new TestCaseData(UserTypeEnum.Normal, AdTypeEnum.BuyItNow, 100m, today, 125),
+            new TestCaseData(UserTypeEnum.Normal, AdTypeEnum.BuyItNow, 100m, today.AddDays(-1), 135),
+            new TestCaseData(UserTypeEnum.Company, AdTypeEnum.Auction, 100m, today, 110),
+            new TestCaseData(UserTypeEnum.Company, AdTypeEnum.Auction, 100m, today.AddDays(-1), 120),
+            new TestCaseData(UserTypeEnum.Company, AdTypeEnum.BuyItNow, 100m, today, 120),
+            new TestCaseData(UserTypeEnum.Company, AdTypeEnum.BuyItNow, 100m, today.AddDays(-1), 130)];
     }
 }
