@@ -1,7 +1,9 @@
 import moment from 'moment';
+import { UserTypeEnum } from './Enums/UserTypeEnum';
+import { AdTypeEnum } from './Enums/AdTypeEnum';
 
 export class Calculator {
-  getFee({userType, itemType, price, endDate}) {    
+  getFee({userType, itemType, price, endDate}: {userType: UserTypeEnum, itemType: AdTypeEnum, price: number, endDate: string}) {    
     switch (userType) {
       case 0: //Normal
         if (itemType === 0) {
