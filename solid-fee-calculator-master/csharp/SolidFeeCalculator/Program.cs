@@ -61,7 +61,7 @@ namespace SolidFeeCalculator
         private static decimal CalculateDiscount(DateTime itemEndDate, UserTypeEnum userType)
         {
             var discount = 0;
-            if (itemEndDate == DateTime.Today) discount += 10;
+            if (itemEndDate.Date == DateTime.Today.Date) discount += 10;
             if (userType == UserTypeEnum.Company) discount += 5;
             return discount;
 
