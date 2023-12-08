@@ -3,7 +3,7 @@ import './App.css';
 import {Calculator} from './calculator';
 import moment from 'moment';
 
-class App extends Component {
+class App extends Component<{}, {items: any[], total: number, newItem: {adType: number, userType: number, price: number, endDate: string}}> {
   constructor(props) {
     super(props);
 
@@ -11,7 +11,7 @@ class App extends Component {
       items: [],
       total: 0,
       newItem: {
-        itemType: -1,
+        adType: -1,
         userType: -1,
         price: 100,
         endDate: moment().format("YYYY-MM-DD"),
@@ -27,7 +27,7 @@ class App extends Component {
         userType: newItem.userType,
         price: newItem.price,
         endDate: newItem.endDate,
-        itemType: parseInt(event.target.value, 10),
+        adType: parseInt(event.target.value, 10),
       }
     });
   };
@@ -37,7 +37,7 @@ class App extends Component {
 
     this.setState({
       newItem: {
-        itemType: newItem.itemType,
+        adType: newItem.adType,
         price: newItem.price,
         endDate: newItem.endDate,
         userType: parseInt(event.target.value, 10),
@@ -63,10 +63,10 @@ class App extends Component {
 
     this.setState({
       newItem: {
-        itemType: newItem.itemType,
+        adType: newItem.adType,
         userType: newItem.userType,
         endDate: newItem.endDate,
-        price: event.target.value
+        price: parseInt(event.target.value, 10)
       }
     });
   };
@@ -76,7 +76,7 @@ class App extends Component {
 
     this.setState({
       newItem: {
-        itemType: newItem.itemType,
+        adType: newItem.adType,
         userType: newItem.userType,
         price: newItem.price,
         endDate: event.target.value,
