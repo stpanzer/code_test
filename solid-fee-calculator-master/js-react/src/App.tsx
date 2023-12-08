@@ -60,14 +60,20 @@ class App extends Component<
   onNewItemSubmit: FormEventHandler = (event) => {
     event.preventDefault();
 
-    const calc = new Calculator();
-    const { newItem } = this.state;
-    const fee = calc.getFee(newItem);
+    const formElement = event.target as HTMLFormElement;
+    const isValid = formElement.checkValidity();
 
-    // update total
-    this.setState({
-      total: this.state.total + fee,
-    });
+    if (!isValid) {
+    } else {
+      const calc = new Calculator();
+      const { newItem } = this.state;
+      const fee = calc.getFee(newItem);
+
+      // update total
+      this.setState({
+        total: this.state.total + fee,
+      });
+    }
   };
 
   onPriceChanged: FormEventHandler = (event) => {
@@ -116,10 +122,11 @@ class App extends Component<
               <select
                 className="form-control"
                 id="itemType"
-                defaultValue="-1"
+                defaultValue=""
+                required
                 onChange={this.onUserTypeChanged}
               >
-                <option value="-1">Select</option>
+                <option value="">Select</option>
                 <option value="0">Person</option>
                 <option value="1">Company</option>
               </select>
@@ -130,10 +137,11 @@ class App extends Component<
               <select
                 className="form-control"
                 id="itemType"
-                defaultValue="-1"
+                defaultValue=""
+                required
                 onChange={this.onItemTypeChange}
               >
-                <option value="-1">Select </option>
+                <option value="">Select </option>
                 <option value="0">Auction</option>
                 <option value="1">Buy it now</option>
               </select>
@@ -153,7 +161,7 @@ class App extends Component<
               <label htmlFor="itemType">End date</label>
               <input
                 className="form-control"
-                type="text"
+                type="date"
                 value={newItem.endDate}
                 onChange={this.onEndDateChanged}
               />
