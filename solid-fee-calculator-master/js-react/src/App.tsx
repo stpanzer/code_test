@@ -1,10 +1,22 @@
-import React, {Component} from 'react';
-import './App.css';
-import {Calculator} from './calculator';
-import moment from 'moment';
+import React, { Component, FormEventHandler } from "react";
+import "./App.css";
+import { Calculator } from "./calculator";
+import moment from "moment";
 
-class App extends Component<{}, {items: any[], total: number, newItem: {adType: number, userType: number, price: number, endDate: string}}> {
-  constructor(props) {
+class App extends Component<
+  {},
+  {
+    items: any[];
+    total: number;
+    newItem: {
+      adType: number;
+      userType: number;
+      price: number;
+      endDate: string;
+    };
+  }
+> {
+  constructor(props: {} | Readonly<{}>) {
     super(props);
 
     this.state = {
@@ -19,37 +31,37 @@ class App extends Component<{}, {items: any[], total: number, newItem: {adType: 
     };
   }
 
-  onItemTypeChange = event => {
-    const {newItem} = this.state;
+  onItemTypeChange: FormEventHandler = (event) => {
+    const { newItem } = this.state;
 
     this.setState({
       newItem: {
         userType: newItem.userType,
         price: newItem.price,
         endDate: newItem.endDate,
-        adType: parseInt(event.target.value, 10),
-      }
+        adType: parseInt((event.target as HTMLSelectElement).value, 10),
+      },
     });
   };
 
-  onUserTypeChanged = event => {
-    const {newItem} = this.state;
+  onUserTypeChanged: FormEventHandler = (event) => {
+    const { newItem } = this.state;
 
     this.setState({
       newItem: {
         adType: newItem.adType,
         price: newItem.price,
         endDate: newItem.endDate,
-        userType: parseInt(event.target.value, 10),
-      }
+        userType: parseInt((event.target as HTMLSelectElement).value, 10),
+      },
     });
   };
 
-  onNewItemSubmit = event => {
+  onNewItemSubmit: FormEventHandler = (event) => {
     event.preventDefault();
 
     const calc = new Calculator();
-    const {newItem} = this.state;
+    const { newItem } = this.state;
     const fee = calc.getFee(newItem);
 
     // update total
@@ -58,34 +70,34 @@ class App extends Component<{}, {items: any[], total: number, newItem: {adType: 
     });
   };
 
-  onPriceChanged = event => {
-    const {newItem} = this.state;
+  onPriceChanged: FormEventHandler = (event) => {
+    const { newItem } = this.state;
 
     this.setState({
       newItem: {
         adType: newItem.adType,
         userType: newItem.userType,
         endDate: newItem.endDate,
-        price: parseInt(event.target.value, 10)
-      }
+        price: parseInt((event.target as HTMLInputElement).value, 10),
+      },
     });
   };
 
-  onEndDateChanged = event => {
-    const {newItem} = this.state;
+  onEndDateChanged: FormEventHandler = (event) => {
+    const { newItem } = this.state;
 
     this.setState({
       newItem: {
         adType: newItem.adType,
         userType: newItem.userType,
         price: newItem.price,
-        endDate: event.target.value,
-      }
+        endDate: (event.target as HTMLInputElement).value,
+      },
     });
   };
 
   render() {
-    const {newItem, total} = this.state;
+    const { newItem, total } = this.state;
 
     return (
       <div className="App">
@@ -105,7 +117,8 @@ class App extends Component<{}, {items: any[], total: number, newItem: {adType: 
                 className="form-control"
                 id="itemType"
                 defaultValue="-1"
-                onChange={this.onUserTypeChanged}>
+                onChange={this.onUserTypeChanged}
+              >
                 <option value="-1">Select</option>
                 <option value="0">Person</option>
                 <option value="1">Company</option>
@@ -118,7 +131,8 @@ class App extends Component<{}, {items: any[], total: number, newItem: {adType: 
                 className="form-control"
                 id="itemType"
                 defaultValue="-1"
-                onChange={this.onItemTypeChange}>
+                onChange={this.onItemTypeChange}
+              >
                 <option value="-1">Select </option>
                 <option value="0">Auction</option>
                 <option value="1">Buy it now</option>
@@ -127,12 +141,22 @@ class App extends Component<{}, {items: any[], total: number, newItem: {adType: 
 
             <div className="form-group">
               <label htmlFor="itemType">Price</label>
-              <input className="form-control" type="number" value={newItem.price} onChange={this.onPriceChanged}  />
+              <input
+                className="form-control"
+                type="number"
+                value={newItem.price}
+                onChange={this.onPriceChanged}
+              />
             </div>
 
             <div className="form-group">
               <label htmlFor="itemType">End date</label>
-              <input className="form-control" type="text" value={newItem.endDate} onChange={this.onEndDateChanged}  />
+              <input
+                className="form-control"
+                type="text"
+                value={newItem.endDate}
+                onChange={this.onEndDateChanged}
+              />
             </div>
 
             <input type="submit" className="btn btn-primary" value="Submit" />
