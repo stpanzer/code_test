@@ -3,38 +3,24 @@ import { UserTypeEnum } from './Enums/UserTypeEnum';
 import { AdTypeEnum } from './Enums/AdTypeEnum';
 
 export class Calculator {
-  getFee({userType, itemType, price, endDate}: {userType: UserTypeEnum, itemType: AdTypeEnum, price: number, endDate: string}) {    
-    switch (userType) {
-      case 0: //Normal
-        if (itemType === 0) {
-          //Auction
-          let endDateDiscount = 0;
-          const isToday = moment(endDate).isSame(moment(), 'day');
-          if (isToday) {
-            endDateDiscount = 10;
-          }
-          return price + 25 - endDateDiscount;
-        } else if (itemType === 1) {
-          //BuyItNow
-          return price + 35 - 0;
-        }
-        break;
-      case 1: //Company
-        if (itemType === 0) {
-          //Auction
-          const isToday = moment(endDate).isSame(moment(), 'day');
-          if (isToday) {
-            return price + 25 - 15; // Enddate discount and company discount
-          }
+  getFee({userType, adType: itemType, price, endDate}: {userType: UserTypeEnum, adType: AdTypeEnum, price: number, endDate: string}) {    
+    return price + this.itemPrices[itemType] - this.calculateDiscount(userType, endDate);
+  }
 
-          return price + 25 - 5; // Only company discount
-        } else if (itemType === 1) {
-          //BuyItNow
-          return price + 35 - 5;
-        }
-        break;
-      default:
-        throw new Error('Unknown user type');
+  private itemPrices = {
+    [AdTypeEnum.Auction]: 25,
+    [AdTypeEnum.BuyItNow]: 35
+  };
+
+  private calculateDiscount(userType: UserTypeEnum, endDate: string) {
+    let discount = 0;
+    if(moment(endDate).isSame(moment(), 'day')) {
+      discount += 10;
     }
+    if(userType === UserTypeEnum.Company) {
+      discount += 5;
+    }
+    return discount;
+
   }
 }
