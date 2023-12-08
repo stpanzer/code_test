@@ -2,18 +2,14 @@ import React, { Component, FormEventHandler } from "react";
 import "./App.css";
 import { Calculator } from "./calculator";
 import moment from "moment";
-
+import { FeeItem } from "./Interfaces/FeeItem";
+import { ItemList } from "./ItemList/ItemList";
 class App extends Component<
   {},
   {
-    items: any[];
+    items: FeeItem[];
     total: number;
-    newItem: {
-      adType: number;
-      userType: number;
-      price: number;
-      endDate: string;
-    };
+    newItem: FeeItem;
   }
 > {
   constructor(props: {} | Readonly<{}>) {
@@ -72,6 +68,7 @@ class App extends Component<
       // update total
       this.setState({
         total: this.state.total + fee,
+        items: [...this.state.items, newItem],
       });
     }
   };
@@ -103,7 +100,7 @@ class App extends Component<
   };
 
   render() {
-    const { newItem, total } = this.state;
+    const { newItem, total, items } = this.state;
 
     return (
       <div className="App">
@@ -113,7 +110,9 @@ class App extends Component<
         <div className="App-page">
           <h2>Items</h2>
 
-          <p>Total fees: {total} </p>
+          <ItemList items={items}></ItemList>
+
+          <p>Total fees: ${total} </p>
 
           <h3>Register new item</h3>
           <form className="New-item-form" onSubmit={this.onNewItemSubmit}>
