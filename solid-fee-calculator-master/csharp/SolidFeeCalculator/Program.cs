@@ -42,50 +42,29 @@ namespace SolidFeeCalculator
         {
             try
             {
-
-                switch (usertype)
-                {
-                    case UserTypeEnum.Normal:
-                        #region Normal user
-                        if (itemtype == ItemTypeEnum.Auction) //Auction
-                        {
-                            var enddateDiscount = 0;
-                            if (itemenddate == DateTime.Today) enddateDiscount = 10;
-
-                            return itemprice + 25 - enddateDiscount;
-                        }
-                        else if (itemtype == ItemTypeEnum.BuyItNow)
-                        {
-                            return itemprice + 35 - 0;
-                        }
-                        break;
-                    #endregion
-                    case UserTypeEnum.Company:
-                        #region Company
-                        if (itemtype == ItemTypeEnum.Auction)
-                        {
-                            if (itemenddate == DateTime.Today)
-                            {
-                                return itemprice + 25 - 15;// Enddate discount and company discount
-                            }
-
-                            return itemprice + 25 - 5;// Only company discount
-                        }
-                        else if (itemtype == ItemTypeEnum.BuyItNow)
-                        {
-                            return itemprice + 35 - 5;
-                        }
-                        break;
-                        #endregion
-                }
-
+                var discount = CalculateDiscount(itemenddate, usertype);
+                return _itemTypePrice[itemtype] + itemprice - discount;
             }
             catch (Exception exception)
             {
                 Console.WriteLine(exception.Message);
                 throw;
             }
-            return 0;
+        }
+        private static Dictionary<ItemTypeEnum, int> _itemTypePrice = new Dictionary<ItemTypeEnum, int>()
+        {
+            {ItemTypeEnum.Auction, 25},
+            {ItemTypeEnum.BuyItNow, 35}
+        };
+
+        private static int CalculateDiscount(DateTime itemEndDate, UserTypeEnum userType)
+        {
+            var discount = 0;
+            if (itemEndDate == DateTime.Today) discount += 10;
+            if (userType == UserTypeEnum.Company) discount += 5;
+            return discount;
+
         }
     }
+
 }
