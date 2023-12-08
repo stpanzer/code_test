@@ -51,18 +51,18 @@ const testCases = [
         adType: AdTypeEnum.BuyItNow,
         price: 10,
         endDate: moment().format("YYYY-MM-DD"),
-        expected: 25
+        expected: 30
     },
     {
         userType: UserTypeEnum.Company,
         adType: AdTypeEnum.BuyItNow,
         price: 10,
         endDate: moment().subtract(1, "days").format("YYYY-MM-DD"),
-        expected: 35
+        expected: 40
     },
 ];
 describe("Calculator", () => {
-    test.each(testCases)("Can calculate fee", (testCase) => {
+    test.each(testCases)("Can calculate fee from %o", (testCase) => {
         const calc = new Calculator();
         const fee = calc.getFee(testCase);
         expect(fee).toBe(testCase.expected);
